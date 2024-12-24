@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age Calculator for 16 September 1993</title>
+  <title>Fancy Age Calculator</title>
   <style>
-    /* Same styles as the main page */
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: white;
       display: flex;
       justify-content: center;
@@ -27,7 +26,16 @@
 
     .container h1 {
       font-size: 2.5em;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .container input[type="date"] {
+      padding: 10px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      margin-bottom: 20px;
     }
 
     .age-display {
@@ -37,13 +45,6 @@
       padding: 15px;
       border-radius: 10px;
       animation: fadeIn 1s;
-    }
-
-    .link {
-      margin-top: 20px;
-      font-size: 1.2em;
-      text-decoration: none;
-      color: #ffcc00;
     }
 
     @keyframes fadeIn {
@@ -60,19 +61,73 @@
 </head>
 <body>
   <div class="container">
-    <h1>Age for 16 September 1993</h1>
-    <div class="age-display" id="ageDisplay">Calculating age...</div>
-    <a class="link" href="index.html">Back to Main Page</a> <!-- Link to go back -->
+    <h1>Fancy Age Calculator</h1>
+
+    <!-- Date Picker Section -->
+    <p>Select your date of birth:</p>
+    <input type="date" id="dob" onchange="startAgeTimer()">
+    <div class="age-display" id="pickerAgeDisplay">Your age will appear here...</div>
+
+    <hr style="margin: 20px 0; border-color: white;">
+
+    <!-- Fixed Date Section -->
+    <h2>Age for 16 September 1993</h2>
+    <div class="age-display" id="fixedAgeDisplay">Calculating age...</div>
   </div>
 
   <script>
-    function calculateAge() {
-      const dob = new Date('1993-09-16'); // Fixed date of birth
+    // Date Picker Age Calculation
+    function startAgeTimer() {
+      const dobInput = document.getElementById('dob').value;
+      if (!dobInput) return;
+
+      const dob = new Date(dobInput);
+
+      function calculateAge(dob) {
+        const now = new Date();
+        const diff = now - dob;
+
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        const months = now.getMonth() - dob.getMonth() + (years * 12);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor(diff / (1000 * 60));
+        const seconds = Math.floor(diff / 1000);
+
+        return {
+          years,
+          months,
+          days,
+          hours,
+          minutes,
+          seconds,
+        };
+      }
+
+      function updatePickerAgeDisplay() {
+        const age = calculateAge(dob);
+
+        document.getElementById('pickerAgeDisplay').innerHTML = `
+          <p><strong>Years:</strong> ${age.years}</p>
+          <p><strong>Months:</strong> ${age.months}</p>
+          <p><strong>Days:</strong> ${age.days}</p>
+          <p><strong>Hours:</strong> ${age.hours}</p>
+          <p><strong>Minutes:</strong> ${age.minutes}</p>
+          <p><strong>Seconds:</strong> ${age.seconds}</p>
+        `;
+      }
+
+      setInterval(updatePickerAgeDisplay, 1000);
+    }
+
+    // Fixed Date Age Calculation
+    function calculateFixedAge() {
+      const fixedDob = new Date('1993-09-16');
       const now = new Date();
-      const diff = now - dob;
+      const diff = now - fixedDob;
 
       const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-      const months = now.getMonth() - dob.getMonth() + (years * 12);
+      const months = now.getMonth() - fixedDob.getMonth() + (years * 12);
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor(diff / (1000 * 60 * 60));
       const minutes = Math.floor(diff / (1000 * 60));
@@ -88,10 +143,10 @@
       };
     }
 
-    function updateAgeDisplay() {
-      const age = calculateAge();
+    function updateFixedAgeDisplay() {
+      const age = calculateFixedAge();
 
-      document.getElementById('ageDisplay').innerHTML = `
+      document.getElementById('fixedAgeDisplay').innerHTML = `
         <p><strong>Years:</strong> ${age.years}</p>
         <p><strong>Months:</strong> ${age.months}</p>
         <p><strong>Days:</strong> ${age.days}</p>
@@ -101,7 +156,7 @@
       `;
     }
 
-    setInterval(updateAgeDisplay, 1000); // Update every second
+    setInterval(updateFixedAgeDisplay, 1000); // Update every second
   </script>
 </body>
 </html>
