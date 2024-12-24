@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"> <!-- Sets the character encoding to UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the webpage responsive -->
+  <title>Fancy Age Calculator Timer</title>
+
+  <!-- Styles for the Age Calculator -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif; /* Sets a clean font */
+      background: linear-gradient(135deg, #6a11cb, #2575fc); /* Adds a gradient background */
+      color: white; /* Text color is white */
+      display: flex; /* Enables flexbox for centering */
+      justify-content: center; /* Centers content horizontally */
+      align-items: center; /* Centers content vertically */
+      height: 100vh; /* Full screen height */
+      margin: 0; /* Removes default margin */
+    }
+
+    .container {
+      text-align: center; /* Centers text inside the container */
+      padding: 20px; /* Adds padding around content */
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+      border-radius: 15px; /* Rounds the corners */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Adds a shadow effect */
+    }
+
+    .container h1 {
+      font-size: 2.5em; /* Larger font size for the title */
+      margin-bottom: 10px; /* Adds space below the title */
+    }
+
+    .container input[type="date"] {
+      padding: 10px; /* Adds padding inside the input field */
+      font-size: 1.2em; /* Increases the font size */
+      border: none; /* Removes default border */
+      border-radius: 10px; /* Rounds the corners of the input field */
+      outline: none; /* Removes focus outline */
+      margin-bottom: 20px; /* Adds space below the input field */
+    }
+
+    .age-display {
+      font-size: 1.5em; /* Larger font for the age display */
+      margin-top: 20px; /* Adds space above the age display */
+      background: rgba(255, 255, 255, 0.1); /* Adds a semi-transparent white background */
+      padding: 15px; /* Adds padding inside the display */
+      border-radius: 10px; /* Rounds the corners */
+      animation: fadeIn 1s; /* Fades in the element with animation */
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0; /* Start with invisible */
+        transform: scale(0.9); /* Slightly smaller scale */
+      }
+      to {
+        opacity: 1; /* Fully visible */
+        transform: scale(1); /* Normal scale */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container"> <!-- Main container for the content -->
+    <h1>Fancy Age Calculator</h1> <!-- Title of the app -->
+    <p>Select your date of birth:</p> <!-- Instruction for the user -->
+    <input type="date" id="dob" onchange="startAgeTimer()"> <!-- Date picker input -->
+    <div class="age-display" id="ageDisplay">Your age will appear here...</div> <!-- Display area for the calculated age -->
+  </div>
+
+  <!-- JavaScript for the Age Calculator -->
+  <script>
+    function startAgeTimer() {
+      const dobInput = document.getElementById('dob').value; // Get the selected date of birth
+      if (!dobInput) return; // Exit if no date is selected
+
+      const dob = new Date(dobInput); // Convert the input string to a Date object
+
+      function calculateAge() {
+        const now = new Date(); // Get the current date and time
+        const diff = now - dob; // Calculate the difference in milliseconds
+
+        // Calculate age components
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // Total years
+        const months = now.getMonth() - dob.getMonth() + (years * 12); // Total months
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24)); // Total days
+        const hours = Math.floor(diff / (1000 * 60 * 60)); // Total hours
+        const minutes = Math.floor(diff / (1000 * 60)); // Total minutes
+        const seconds = Math.floor(diff / 1000); // Total seconds
+
+        return {
+          years,
+          months,
+          days,
+          hours,
+          minutes,
+          seconds,
+        }; // Return the calculated values as an object
+      }
+
+      function updateAgeDisplay() {
+        const age = calculateAge(); // Get the calculated age
+
+        // Update the age display area with the calculated values
+        document.getElementById('ageDisplay').innerHTML = `
+          <p><strong>Years:</strong> ${age.years}</p>
+          <p><strong>Months:</strong> ${age.months}</p>
+          <p><strong>Days:</strong> ${age.days}</p>
+          <p><strong>Hours:</strong> ${age.hours}</p>
+          <p><strong>Minutes:</strong> ${age.minutes}</p>
+          <p><strong>Seconds:</strong> ${age.seconds}</p>
+        `;
+      }
+
+      setInterval(updateAgeDisplay, 1000); // Update the display every second
+    }
+  </script>
+</body>
+</html>
