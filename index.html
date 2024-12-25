@@ -1,148 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"> <!-- Sets the character encoding to UTF-8 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures the page is responsive -->
+  <meta charset="UTF-8"> <!-- Sets character encoding to UTF-8 for proper text rendering -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page responsive on all devices -->
   <title>Fancy Age Calculator Timer</title>
-
-  <!-- Inline CSS styles -->
-  <style>
-    /* Basic styles for the entire body */
-    body {
-      font-family: 'Arial', sans-serif; /* Sets a clean and readable font */
-      background: linear-gradient(135deg, #6a11cb, #2575fc); /* Adds a gradient background */
-      color: white; /* Sets text color to white */
-      display: flex; /* Uses flexbox for layout */
-      justify-content: center; /* Centers the content horizontally */
-      align-items: center; /* Centers the content vertically */
-      height: 100vh; /* Makes the height of the body fill the entire viewport */
-      margin: 0; /* Removes default browser margin */
-    }
-
-    /* Styles for the main container holding all content */
-    .container {
-      text-align: center; /* Centers text inside the container */
-      padding: 20px; /* Adds padding around the container */
-      background: rgba(0, 0, 0, 0.5); /* Adds a semi-transparent black background */
-      border-radius: 15px; /* Rounds the corners of the container */
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Creates a shadow for depth effect */
-    }
-
-    /* Styles for the title (h1) */
-    .container h1 {
-      font-size: 2.5em; /* Increases font size for better visibility */
-      margin-bottom: 10px; /* Adds space below the title */
-    }
-
-    /* Styles for the date input field */
-    .container input[type="date"] {
-      padding: 10px; /* Adds space inside the input box */
-      font-size: 1.2em; /* Makes the text larger for readability */
-      border: none; /* Removes the default border */
-      border-radius: 10px; /* Rounds the corners of the input field */
-      outline: none; /* Removes the focus outline */
-      margin-bottom: 20px; /* Adds space below the input field */
-    }
-
-    /* Styles for the age display area */
-    .age-display {
-      font-size: 1.5em; /* Sets a larger font size for the age display */
-      margin-top: 20px; /* Adds space above the age display */
-      background: rgba(255, 255, 255, 0.1); /* Adds a semi-transparent white background */
-      padding: 15px; /* Adds padding inside the display box */
-      border-radius: 10px; /* Rounds the corners */
-      animation: fadeIn 1s; /* Animates the age display box when it appears */
-    }
-
-    /* Animation for the fade-in effect */
-    @keyframes fadeIn {
-      from {
-        opacity: 0; /* Starts invisible */
-        transform: scale(0.9); /* Starts slightly smaller */
-      }
-      to {
-        opacity: 1; /* Becomes fully visible */
-        transform: scale(1); /* Returns to normal size */
-      }
-    }
-
-    /* Container for the navigation link */
-    .link-container {
-      margin-top: 20px; /* Adds space above the link container */
-    }
-
-    /* Styles for the link */
-    .link-container a {
-      text-decoration: none; /* Removes the default underline from links */
-      color: #ffcc00; /* Sets a bright yellow text color */
-      font-size: 1.2em; /* Makes the text larger */
-      font-weight: bold; /* Makes the link text bold */
-      background: rgba(255, 255, 255, 0.2); /* Adds a semi-transparent white background */
-      padding: 10px 15px; /* Adds padding around the link text */
-      border-radius: 10px; /* Rounds the corners */
-      transition: all 0.3s ease; /* Adds smooth hover effects */
-    }
-
-    /* Hover effect for the link */
-    .link-container a:hover {
-      background: rgba(255, 255, 255, 0.4); /* Lightens the background */
-      color: white; /* Changes text color to white */
-    }
-  </style>
+  <link rel="stylesheet" href="style.css"> <!-- Links external CSS file for styling -->
 </head>
 <body>
-  <!-- Main container for the content -->
+  <!-- Main container to hold the calculator UI -->
   <div class="container">
-    <h1>Fancy Age Calculator</h1> <!-- App title -->
-    <p>Select your date of birth:</p> <!-- Instruction for users -->
-    <input type="date" id="dob" onchange="startAgeTimer()"> <!-- Date picker input that triggers the JavaScript function when changed -->
-    <div class="age-display" id="ageDisplay">Your age will appear here...</div> <!-- Area to display the calculated age -->
+    <h1>Fancy Age Calculator</h1> <!-- Title of the page -->
+    <p>Select your date of birth:</p> <!-- Instruction for the user -->
+    <input type="date" id="dob" onchange="startAgeTimer()"> <!-- Date picker input that triggers JavaScript function -->
+    <div class="age-display" id="ageDisplay">Your age will appear here...</div> <!-- Placeholder for dynamic age display -->
 
-    <!-- Link to another HTML page -->
+    <!-- Navigation link to another page -->
     <div class="link-container">
-      <a href="fixed-age.html">Go to Fixed Age Page</a> <!-- Styled link to the fixed-age.html page -->
+      <a href="fixed-age.html">Go to Fixed Age Page</a> <!-- Styled link to a different page -->
     </div>
   </div>
 
-  <!-- JavaScript for dynamic age calculation -->
-  <script>
-    function startAgeTimer() {
-      const dobInput = document.getElementById('dob').value; // Fetches the value of the selected date of birth
-      if (!dobInput) return; // Exits the function if no date is selected
-
-      const dob = new Date(dobInput); // Converts the input string into a Date object
-
-      // Function to calculate age components
-      function calculateAge() {
-        const now = new Date(); // Gets the current date and time
-        const diff = now - dob; // Calculates the difference in milliseconds
-
-        // Converts the difference into various age units
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // Calculates years
-        const months = now.getMonth() - dob.getMonth() + (years * 12); // Calculates months
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24)); // Calculates days
-        const hours = Math.floor(diff / (1000 * 60 * 60)); // Calculates hours
-        const minutes = Math.floor(diff / (1000 * 60)); // Calculates minutes
-        const seconds = Math.floor(diff / 1000); // Calculates seconds
-
-        return { years, months, days, hours, minutes, seconds }; // Returns the age as an object
-      }
-
-      // Function to update the age display
-      function updateAgeDisplay() {
-        const age = calculateAge(); // Calculates the current age
-        document.getElementById('ageDisplay').innerHTML = `
-          <p><strong>Years:</strong> ${age.years}</p>
-          <p><strong>Months:</strong> ${age.months}</p>
-          <p><strong>Days:</strong> ${age.days}</p>
-          <p><strong>Hours:</strong> ${age.hours}</p>
-          <p><strong>Minutes:</strong> ${age.minutes}</p>
-          <p><strong>Seconds:</strong> ${age.seconds}</p>
-        `; // Updates the HTML content of the age display with the calculated values
-      }
-
-      setInterval(updateAgeDisplay, 1000); // Recalculates and updates the display every second
-    }
-  </script>
+  <script src="script.js"></script> <!-- Links external JavaScript file for functionality -->
 </body>
 </html>
